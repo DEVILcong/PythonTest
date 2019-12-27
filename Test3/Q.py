@@ -16,9 +16,12 @@ class Lib:
         if op.exists(self._fileLoc):
             with open(self._fileLoc) as file1:
                 content = file1.readlines()
+            #print(content)
             for i in range(len(content)):
                 content[i] = content[i][:-1:]
                 content[i] = content[i].split(' ')
+                if len(content[i]) != 2 :
+                    continue
                 self._store[content[i][0]] = content[i][1]
             print('get book dict successifully')
         else:
@@ -28,9 +31,9 @@ class Lib:
         print('output book dict to file...')
         if op.exists(self._fileLoc):
             print('add new book to original store...')
-            file1 = open(self._fileLoc, 'a')
-            for key in self._newBook:
-                file1.writelines(key + ' ' + self._store[key] + '\n')
+            file1 = open(self._fileLoc, 'w')
+            for item in self._store.items():
+                file1.writelines(item[0] + ' ' + item[1] + '\n')
         else:
             print('create file and write data...')
             file1 = open(self._fileLoc, 'w')
@@ -77,9 +80,11 @@ class Lib:
     def addBook(self, key, name):
         lowerCase = list(string.ascii_lowercase)
         upperCase = list(string.ascii_uppercase)
+        digits = list(string.digits)
         selfDef = ['?', '!', '.', ',', '$']
         
         lowerCase.extend(upperCase)
+        lowerCase.extend(digits)
         lowerCase.extend(selfDef)
         
         nameList = list(name)
@@ -93,7 +98,7 @@ class Lib:
             return
         
         self._store[key] = name
-        self._newBook.append(key)
+        #self._newBook.append(key)
     
     def output(self):
         print(self._store)
